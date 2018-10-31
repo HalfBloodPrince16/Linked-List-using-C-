@@ -12,21 +12,21 @@ struct node
 {
 	int data;
 	node *next;
-	node *prev;
 };
 struct node *head=NULL;
-
+ll size=0;
 void insert()
 {
 	int data;
-	cout<<"Enter Data";
+	cout<<"Enter data";
 	cin>>data;
 	node *temp = new node();
+	size++;
 	temp->data = data;
-	temp->prev = head;
 	temp->next = head;
 	head = temp;
 }
+
 void display()
 {
 	cout<<"\n";
@@ -38,66 +38,76 @@ void display()
 	}
 	cout<<"\n";
 }
-
 void insert_in_bw()
 {
 	int data,pos;
-	cout<<"Enter Data";
+	cout<<"Enter Data:";
 	cin>>data;
-	cout<<"Enter Position";
+	cout<<"Enter Position:";
 	cin>>pos;
-	if(pos<0){cout<<"Enter correct posn bitch";return;}
-	if(pos == 1)
-	{
-		node *temp = new node();
-		temp->data = data;
-		temp->prev = head;
-		temp->next = head;
-		head = temp;
-		return;
-	}
-
-	node *p = head;
+	if(pos > size || pos < 0){cout<<"wrong posn bitch";return;}
 	int cnt=1;
+	node *p = head;
 	while(cnt <= pos-2)
 	{
 		cnt++;
 		p = p->next;
 	}
-
+	//cout<<cnt;
+	//cout<<p->data;
 	node *temp = new node();
+	node *t;
 	temp->data = data;
-	temp->next = p->next;
-	p->next = temp;
-	temp->prev = p;
-	temp->next->prev = temp;
-
+	size++;
+	t = p->next;
+    p->next = temp;
+    temp->next = t;
 }
 
 void del()
 {
 	int pos;
-	node *p = head;
-	int cnt=1;
 	cout<<"Enter Position:";
 	cin>>pos;
+	if(pos > size || pos < 0){cout<<"wrong posn bitch";return;}
+	int cnt=1;
+	node *p = head;
 	if(pos == 1)
 	{
-		head= p->next;
+		head = p->next;
 		free(p);
+		size--;
 		return;
 	}
-	while(cnt < pos)
+	while(cnt < pos-1)
 	{
 		cnt++;
 		p = p->next;
 	}
-	//cout<<p->data;	
-	p->prev->next = p->next;
-	p->next->prev = p->prev;
-	free(p);
+	node *t;
+	t = p->next->next;
+	free(p->next);
+	p->next = t;
+	size--;
+	cnt=1;
+	return;
 }
 
+void reverse()
+{
+    node *current = head;
+    node *prev = NULL, *next = NULL;
+
+
+    while (current != NULL)
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    head = prev;
+}
 int main(int argc, char const *argv[])
 {
 	int ch;
@@ -111,7 +121,7 @@ int main(int argc, char const *argv[])
 			case 2:display();break;
 			case 3:insert_in_bw();break;
 			case 4:del();break;
-			/*case 5:reverse();break;*/
+			case 5:reverse();break;
 		}
 	}
 	while(ch!=6);
