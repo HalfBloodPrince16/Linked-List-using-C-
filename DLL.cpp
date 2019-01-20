@@ -8,6 +8,7 @@ priority_queue<int>pq;
 std::map<int,int> m;
 const int N=1e6+10;
 /*--------------------------hbp16@hbp16-Inspiron-3543:-$------------------------------*/
+
 struct node 
 {
 	int data;
@@ -16,105 +17,119 @@ struct node
 };
 struct node *head=NULL;
 
-void insert()
-{
-	int data;
-	cout<<"Enter Data";
-	cin>>data;
-	node *temp = new node();
-	temp->data = data;
-	temp->prev = head;
-	temp->next = head;
-	head = temp;
-}
-void display()
-{
-	cout<<"\n";
-	node *p = head;
-	while(p!=NULL)
-	{
-		cout<<p->data<<" ";
-		p = p->next;
-	}
-	cout<<"\n";
-}
-
-void insert_in_bw()
+void Insert()
 {
 	int data,pos;
-	cout<<"Enter Data";
-	cin>>data;
-	cout<<"Enter Position";
-	cin>>pos;
-	if(pos<0){cout<<"Enter correct posn bitch";return;}
-	if(pos == 1)
+	cout<<"Enter Data:"; cin>>data;
+	cout<<"Enter Pos:"; cin>>pos;
+
+	node *temp = new node;
+	temp->data = data;
+
+	if(pos==1)
 	{
-		node *temp = new node();
-		temp->data = data;
-		temp->prev = head;
 		temp->next = head;
 		head = temp;
-		return;
+		temp->prev = NULL;
 	}
-
-	node *p = head;
-	int cnt=1;
-	while(cnt <= pos-2)
+	else
 	{
-		cnt++;
+		int k=1;
+		node *p=head;
+
+		while(p!=NULL && k<pos-1)
+		{
+			k++;
+			p = p->next;
+		}
+
+		temp->next = p->next;
+		temp->prev = p;
+		p->next = temp;
 		p = p->next;
+		p->prev = temp;
 	}
-
-	node *temp = new node();
-	temp->data = data;
-	temp->next = p->next;
-	p->next = temp;
-	temp->prev = p;
-	temp->next->prev = temp;
-
 }
 
-void del()
+void Del()
 {
-	int pos;
-	node *p = head;
-	int cnt=1;
-	cout<<"Enter Position:";
-	cin>>pos;
-	if(pos == 1)
+	int pos,k;
+	cout<<"Enter Pos:"; cin>>pos;
+	
+	if(pos==1)
 	{
-		head= p->next;
+		node *p = head;
+		node *t = head->next;
+		head = head->next;
+		t->prev = NULL;
+		p->next = NULL;
 		free(p);
-		return;
 	}
-	while(cnt < pos)
+	else
 	{
-		cnt++;
+
+		int k=1;
+		node *p=head;
+
+		while(p!=NULL && k<pos-1)
+		{
+			k++;
+			p = p->next;
+		}
+
+		if(p->next->next==NULL)
+		{	
+			node *t = p->next;
+			t->next=NULL;
+			t->prev=NULL;
+			free(t);
+			p->next=NULL;
+			return;
+		}	
+
+		node *t = p->next;
+		p->next = t->next;
+		node *tt = t->next;
+		tt->prev = t->prev;
+		t->prev = NULL;
+		t->next = NULL;
+		free(t);
+	}
+	return;
+}
+
+void Display()
+{
+	node *p = head;
+
+	while(p!=NULL)
+	{
+		cout<<p->data<<"->";
 		p = p->next;
 	}
-	//cout<<p->data;	
-	p->prev->next = p->next;
-	p->next->prev = p->prev;
-	free(p);
+	cout<<endl;
 }
 
 int main(int argc, char const *argv[])
 {
 	int ch;
+
 	do
 	{
-		cout<<"1:Insert\n2:Display\n3:Insert in Between\n4:Delete\n5:Reverse";
+		cout<<"1:Insert\n2:Delete\n3:Display\n";
 		cin>>ch;
+
 		switch(ch)
 		{
-			case 1:insert();break;
-			case 2:display();break;
-			case 3:insert_in_bw();break;
-			case 4:del();break;
-			/*case 5:reverse();break;*/
+			case 1: Insert();
+				break;
+			case 2: Del();
+				break;
+			case 3: Display();
+				break;
+
 		}
 	}
-	while(ch!=6);
-	
+	while(ch!=4);
 	return 0;
 }
