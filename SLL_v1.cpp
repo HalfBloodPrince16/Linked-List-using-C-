@@ -83,6 +83,29 @@ void insert()
 	}
 }
 
+void del()
+{
+	int pos,k=1;
+	cout<<"Enter Position of Node to be Deleted:"; cin>>pos;
+	node *p=head;
+	
+	if(pos==1)
+	{
+		head = p->next;
+		free(p);
+		return;
+	}
+	while(p != NULL && k<pos-1)
+	{
+		k++;
+		p = p->next;
+	}
+	node *t = p->next;
+	p->next = t->next;
+	free(t);
+
+}
+
 void display()
 {
 	node *p = head;
@@ -104,15 +127,13 @@ int main()
 		{
 			case 1: insert();
 					break;
-			/*case 2: del();
+			case 2: del();
 					break;
-			case 3: modify();
-					break;*/
-			case 4: display();
+			case 3: display();
 					break;
 		}
 	}
-	while(ch!=5);
+	while(ch!=4);
 	
 	return 0;
 }
