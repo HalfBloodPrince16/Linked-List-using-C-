@@ -99,6 +99,18 @@ void display()
 	}
 }
 
+void del()
+{
+	int pos;
+	cout<<"Enter Position:";cin>>pos;
+	node *p = head;
+	for(int i=1;i<pos-1;i++)
+	{
+		p = p->next;
+	}
+
+}
+
 int main()
 {
 	int ch;
@@ -110,8 +122,8 @@ int main()
 		{
 			case 1: insert();
 					break;
-			/*case 2: del();
-					break;*/
+			case 2: del();
+					break;
 			case 3: display();
 					break;
 		}
